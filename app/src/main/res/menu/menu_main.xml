@@ -2,21 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/settings"
+        android:id="@+id/about"
         android:orderInCategory="100"
-        android:title="Settings"
-        app:showAsAction="never"
-        />
-    <item
-        android:id="@+id/edit"
-        android:orderInCategory="100"
-        android:title="Edit"
+        android:title="@string/about_menu_item"
         app:showAsAction="never"
         />
     <item
         android:id="@+id/exit"
         android:orderInCategory="100"
-        android:title="Exit"
+        android:title="@string/exit_menu_item"
         app:showAsAction="never"
         />
 

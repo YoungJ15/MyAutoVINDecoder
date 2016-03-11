@@ -1,5 +1,6 @@
 package com.peralta.apps.vininformation;
 
+import android.app.Dialog;
 import android.app.Fragment;
 import android.content.Intent;
 import android.net.Uri;
@@ -8,10 +9,18 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import com.google.ads.AdRequest;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
+import com.google.android.gms.ads.doubleclick.PublisherInterstitialAd;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,6 +33,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import utils.CheckNetwork;
+
 /**
  * Created by Josermando on 3/5/2016.
  */
@@ -31,12 +42,24 @@ public class VinFragment extends Fragment {
 
     private EditText vinEditText;
     private Button vinButton;
+
+    private PublisherInterstitialAd interstitialAd;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        //return super.onCreateView(inflater, container, savedInstanceState);
 
         View layout = inflater.inflate(R.layout.vin_fragment, container, false);
+
+        interstitialAd = new PublisherInterstitialAd(getActivity());
+        interstitialAd.setAdUnitId(getString(R.string.interstitial_unit_id));
+        interstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                requestNewInterstitial();
+            }
+        });
+        requestNewInterstitial();
+
         vinEditText = (EditText) layout.findViewById(R.id.vinEditText);
         vinButton = (Button) layout.findViewById(R.id.vinButton);
         vinButton.setOnClickListener(new View.OnClickListener() {
@@ -44,11 +67,52 @@ public class VinFragment extends Fragment {
             public void onClick(View v) {
                 String vinText;
                 vinText = vinEditText.getText().toString().trim();
-                new FetchVinTask().execute(vinText);
+                if(vinText.length() < 17){
+                    Toast.makeText(getActivity(),"VIN must be 17 numbers", Toast.LENGTH_LONG).show();
+                    vinEditText.requestFocus();
+                }
+                else{
+                    if (interstitialAd.isLoaded()) {
+                        interstitialAd.show();
+                    }
+                    new FetchVinTask().execute(vinText);
+                }
+
             }
         });
 
         return layout;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id){
+            case R.id.about:
+                item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        Dialog dialog = new Dialog(getActivity());
+                        dialog.setContentView(R.layout.about_dialog);
+                        dialog.setTitle(R.string.app_name);
+                        dialog.show();
+                        Log.d("About option clicked", String.valueOf(item.getItemId()));
+                        return true;
+                    }
+                });
+                break;
+            case R.id.exit:
+
+               getActivity().finish();
+                Log.d("Exit option clicked", String.valueOf(item.getItemId()));
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void requestNewInterstitial(){
+        PublisherAdRequest adRequest = new PublisherAdRequest.Builder().setGender(PublisherAdRequest.GENDER_MALE).addTestDevice("E3E4253CB2F3CB3CC2E697C997236F0E").build();
+        interstitialAd.loadAd(adRequest);
     }
 
 
@@ -57,19 +121,14 @@ public class VinFragment extends Fragment {
 
         private final String LOG_TAG = FetchVinTask.class.getSimpleName();
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
+       /** @Override
         protected void onPostExecute(String[] strings) {
             Log.v(LOG_TAG + " Valor del PostExecute", strings.toString());
             if(strings != null){
-     //           Intent intent = new Intent(getActivity().getBaseContext(), DetailsActivity.class);
-     //           intent.putExtra("make", strings.toString());
+
             }
         }
+        **/
 
         @Override
         protected void onProgressUpdate(Void... values) {
@@ -142,46 +201,145 @@ public class VinFragment extends Fragment {
         }
 
         private String[] getVINInfoFromJSON(String VINJSONString) throws  JSONException{
-            //JSON Objects Names to Extract
-            final String EDP_MAKE = "make";
-            final String EDP_MODEL = "model";
-            final String EDP_DRIVE = "drivenWheels";
-            final String EDP_SQUISH_VIN = "squishVin";
-            final String EDP_TRANSMISSION = "transmission";
-            final String EDP_ENGINE = "engine";
+
             final String EDP_MPG = "MPG";
             final String EDP_YEARS = "years";
 
+            Intent intent = new Intent(getActivity().getBaseContext(), DetailsActivity.class);
+
             JSONObject VINJSON = new JSONObject(VINJSONString);
-            JSONObject JSONMake = VINJSON.getJSONObject(EDP_MAKE);
-            JSONObject JSONModel = VINJSON.getJSONObject(EDP_MODEL);
-            JSONObject JSONTransmission = VINJSON.getJSONObject(EDP_TRANSMISSION);
-            JSONObject JSONENGINE = VINJSON.getJSONObject(EDP_ENGINE);
-            JSONObject JSONMPG = VINJSON.getJSONObject(EDP_MPG);
-            JSONArray JSONYEAR = VINJSON.getJSONArray(EDP_YEARS);
-            Log.v(LOG_TAG+" Year Array:",JSONYEAR.toString());
+            JSONObject JSONMake = null;
+            JSONObject JSONModel = null;
+            JSONObject JSONTransmission = null;
+            JSONObject JSONENGINE = null;
+            JSONObject JSONMPG = null;
+            JSONArray JSONYEARArray = null;
+            JSONObject JSONYEAR = null;
+
+            if(VINJSON.has("make")){
+                JSONMake = VINJSON.getJSONObject("make");
+            }
+            if(VINJSON.has("model")){
+                JSONModel = VINJSON.getJSONObject("model");
+            }
+            if(VINJSON.has("transmission")){
+                JSONTransmission = VINJSON.getJSONObject("transmission");
+            }
+            if(VINJSON.has("engine")){
+                JSONENGINE = VINJSON.getJSONObject("engine");
+            }
+            if(VINJSON.has("MPG")){
+                JSONMPG = VINJSON.getJSONObject(EDP_MPG);
+            }
+            if(VINJSON.has("years")){
+                JSONYEARArray = VINJSON.getJSONArray(EDP_YEARS);
+                JSONYEAR = JSONYEARArray.getJSONObject(0);
+            }
+            Log.v(LOG_TAG+" Year Array:",JSONYEARArray.toString());
+            Log.v(LOG_TAG+" Year Object",JSONYEAR.toString());
 
             Log.v(LOG_TAG + " VIN JSON", VINJSONString.toString());
             String [] resultString = new String [10];
 
-            String make = JSONMake.getString("name");
-            String model = JSONModel.getString("name");
-            String drive = VINJSON.getString(EDP_DRIVE);
-            String transmissionType = JSONTransmission.getString("transmissionType");
-            String numberOfSpeed = JSONTransmission.getString("numberOfSpeeds");
-            String squishVin = VINJSON.getString(EDP_SQUISH_VIN);
-            String doors = VINJSON.getString("numOfDoors");
-            String cylinders = JSONENGINE.getString("cylinder");
-            String horsePower = JSONENGINE.getString("horsepower");
-            String litters = JSONENGINE.getString("size");
-            String mpgHighway = JSONMPG.getString("highway");
-            String mpgCity = JSONMPG.getString("city");
-            //String year = JSONYEAR.getJSONObject(1);
-            //Log.v(LOG_TAG+" Year: ",year);
+            //Strings to put into the Intent
+            String noValue = "Data not found";
+            String make = null;
+            String model = null;
+            String drive = null;
+            String transmissionType = null;
+            String numberOfSpeed = null;
+            String squishVin = null;
+            String doors = null;
+            String cylinders = null;
+            String horsePower = null;
+            String litters = null;
+            String mpgHighway = null;
+            String mpgCity = null;
+            String year = null;
 
-            resultString[1] = make + model + drive + transmissionType + numberOfSpeed + doors + mpgHighway + mpgCity + squishVin;
+            if(JSONMake!= null && JSONMake.has("name")){
+                make = JSONMake.getString("name");
+            }
+            else{
+                make = noValue;
+            }
+            if(JSONModel != null && JSONModel.has("name")) {
+                model = JSONModel.getString("name");
+            }
+            else{
+                model = noValue;
+            }
+            if(VINJSON.has("drivenWheels")) {
+                drive = VINJSON.getString("drivenWheels");
+            }
+            else{
+                drive = noValue;
+            }
+            if(JSONTransmission != null && JSONTransmission.has("transmissionType")) {
+                transmissionType = JSONTransmission.getString("transmissionType");
+           }
+            else{
+                transmissionType = noValue;
+            }
+            if(JSONTransmission != null && JSONTransmission.has("numberOfSpeeds") ) {
+                numberOfSpeed = JSONTransmission.getString("numberOfSpeeds");
+            }
+            else{
+                numberOfSpeed = noValue;
+            }
+            if(VINJSON.has("squishVin") ) {
+                squishVin = VINJSON.getString("squishVin");
+            }
+            else{
+                squishVin = noValue;
+            }
+            if(VINJSON.has("numOfDoors")  ) {
+                doors = VINJSON.getString("numOfDoors");
+            }
+            else{
+                doors = noValue;
+            }
+            if(JSONENGINE != null && JSONENGINE.has("cylinder") ) {
+                cylinders = JSONENGINE.getString("cylinder");
+            }
+            else{
+                cylinders = noValue;
+            }
+            if(JSONENGINE != null && JSONENGINE.has("horsepower")) {
+                horsePower = JSONENGINE.getString("horsepower");
+            }
+            else{
+                horsePower = noValue;
+            }
+            if(JSONENGINE != null && JSONENGINE.has("size")) {
+                litters = JSONENGINE.getString("size");
+            }
+            else{
+                litters = noValue;
+            }
+            if(JSONMPG != null && JSONMPG.has("highway")) {
+                mpgHighway = JSONMPG.getString("highway");
+            }
+            else{
+                mpgHighway = noValue;
+            }
+            if(JSONMPG != null && JSONMPG.has("city")) {
+                mpgCity = JSONMPG.getString("city");
+            }
+            else{
+                mpgCity = noValue;
+            }
+            if(JSONYEAR != null && JSONYEAR.has("year")) {
+                year = JSONYEAR.getString("year");
+            }
+            else{
+                year = noValue;
+            }
 
-            Intent intent = new Intent(getActivity().getBaseContext(), DetailsActivity.class);
+            Log.v(LOG_TAG+" Year: ",year);
+
+            resultString[1] = make + model + drive + transmissionType + numberOfSpeed + doors + mpgHighway + mpgCity + squishVin + year;
+
             intent.putExtra("make", make);
             intent.putExtra("model", model);
             intent.putExtra("drive", drive);
@@ -193,7 +351,7 @@ public class VinFragment extends Fragment {
             intent.putExtra("cylinder", cylinders);
             intent.putExtra("horsepower", horsePower);
             intent.putExtra("litters", litters);
-            //intent.putExtra("year",year);
+            intent.putExtra("year",year);
             intent.putExtra("squishVin", squishVin);
 
             getActivity().startActivity(intent);

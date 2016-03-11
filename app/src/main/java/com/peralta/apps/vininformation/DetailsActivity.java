@@ -1,10 +1,16 @@
 package com.peralta.apps.vininformation;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.MenuItem;
 import android.widget.TextView;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import org.w3c.dom.Text;
 
@@ -24,7 +30,6 @@ public class DetailsActivity extends AppCompatActivity {
     private TextView littersView;
     private TextView yearView;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +37,31 @@ public class DetailsActivity extends AppCompatActivity {
         setUpToolbar();
         getViewValues();
         getIntentData();
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id){
+            case R.id.about:
+                item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        Dialog dialog = new Dialog(DetailsActivity.this);
+                        dialog.setContentView(R.layout.about_dialog);
+                        dialog.setTitle(R.string.app_name);
+                        dialog.show();
+                        Log.d("About option clicked", String.valueOf(item.getItemId()));
+                        return true;
+                    }
+                });
+                break;
+            case R.id.exit:
+
+                finish();
+                Log.d("Exit option clicked", String.valueOf(item.getItemId()));
+        }
+        return super.onOptionsItemSelected(item);
     }
     private void setUpToolbar(){
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -54,7 +84,7 @@ public class DetailsActivity extends AppCompatActivity {
         String cylinder = intent.getStringExtra("cylinder");
         String horsePower = intent.getStringExtra("horsepower");
         String litters = intent.getStringExtra("litters");
-      //  String year = intent.getStringExtra("year");
+        String year = intent.getStringExtra("year");
 
         makeView.setText(make);
         modelView.setText(model);
@@ -64,11 +94,11 @@ public class DetailsActivity extends AppCompatActivity {
         doorsView.setText(doors);
         mpgHighwayView.setText(mpgHighway);
         mpgCityView.setText(mpgCity);
-        squishVinView.setText(squishVin);
+       // squishVinView.setText(squishVin);
         cylinderView.setText(cylinder);
         horsePowerView.setText(horsePower);
         littersView.setText(litters);
-      //  yearView.setText(year);
+        yearView.setText(year);
 
     }
 
@@ -81,10 +111,9 @@ public class DetailsActivity extends AppCompatActivity {
         doorsView = (TextView) findViewById(R.id.doorsView);
         mpgHighwayView = (TextView) findViewById(R.id.mpgHighwayView);
         mpgCityView = (TextView) findViewById(R.id.mpgCityView);
-        squishVinView = (TextView) findViewById(R.id.squishVinView);
         cylinderView = (TextView) findViewById(R.id.cylinderView);
         horsePowerView = (TextView) findViewById(R.id.horsePowerView);
         littersView = (TextView) findViewById(R.id.littersView);
-        //yearView = (TextView) findViewById(R.id.yearView);
+        yearView = (TextView) findViewById(R.id.yearView);
     }
 }

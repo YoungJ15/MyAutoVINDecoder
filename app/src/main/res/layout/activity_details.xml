@@ -3,223 +3,341 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context="com.peralta.apps.vininformation.DetailsActivity">
 
     <include android:id="@+id/toolbar"
         layout="@layout/toolbar"/>
 
+         <LinearLayout
+            android:id="@+id/makeLayout"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+             android:padding="5dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Vehicle Make:"
+                android:id="@+id/textView"
+                android:layout_row="0"
+                android:layout_column="0"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/makeTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_row="0"
+                android:layout_column="1"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/modelLayout"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Vehicle Model:"
+                android:id="@+id/textView2"
+                android:layout_row="1"
+                android:layout_column="0"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/modelTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_row="1"
+                android:layout_column="1"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/driveLayout"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="5dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Type of Drive:"
+                android:id="@+id/textView3"
+                android:layout_row="2"
+                android:layout_column="0"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/driveTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_row="2"
+                android:layout_column="1"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/transmissionLayout"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Transmission Type:"
+                android:id="@+id/textView4"
+                android:layout_row="3"
+                android:layout_column="0"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/transmissionTypeView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_row="3"
+                android:layout_column="3"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/speedsLayout"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Number of Speeds:"
+                android:id="@+id/textView5"
+                android:layout_row="4"
+                android:layout_column="0"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/numberOfSpeedView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_row="2"
+                android:layout_column="5"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/doorsLayout"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Number of Doors:"
+                android:id="@+id/textView6"
+                android:layout_row="5"
+                android:layout_column="0"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/doorsView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_row="2"
+                android:layout_column="7"
+                android:layout_weight="1" />
+        </LinearLayout>
+
     <LinearLayout
+            android:id="@+id/mpgHighwayLayout"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+        android:padding="5dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="MPG / Highway:"
+                android:id="@+id/textView7"
+                android:layout_row="6"
+                android:layout_column="0"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/mpgHighwayView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_row="2"
+                android:layout_column="9"
+                android:layout_weight="1" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/mpgCityLayout"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:padding="5dp">
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Vehicle Make:"
-            android:id="@+id/textView"
-            android:layout_row="0"
-            android:layout_column="0" />
-
-        <TextView
-            android:id="@+id/makeTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_row="0"
-            android:layout_column="1" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Vehicle Model:"
-            android:id="@+id/textView2"
-            android:layout_row="1"
-            android:layout_column="0" />
-
-        <TextView
-            android:id="@+id/modelTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_row="1"
-            android:layout_column="1" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Type of Drive:"
-            android:id="@+id/textView3"
-            android:layout_row="2"
-            android:layout_column="0" />
-
-        <TextView
-            android:id="@+id/driveTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_row="2"
-            android:layout_column="1" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Transmission Type:"
-            android:id="@+id/textView4"
-            android:layout_row="3"
-            android:layout_column="0" />
-
-        <TextView
-            android:id="@+id/transmissionTypeView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_row="3"
-            android:layout_column="3" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Number of Speeds:"
-            android:id="@+id/textView5"
-            android:layout_row="4"
-            android:layout_column="0" />
-
-        <TextView
-            android:id="@+id/numberOfSpeedView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_row="2"
-            android:layout_column="5" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Number of Doors:"
-            android:id="@+id/textView6"
-            android:layout_row="5"
-            android:layout_column="0" />
-
-        <TextView
-            android:id="@+id/doorsView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_row="2"
-            android:layout_column="7" />
-
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="MPG / Highway:"
-            android:id="@+id/textView7"
-            android:layout_row="6"
-            android:layout_column="0" />
-
-        <TextView
-            android:id="@+id/mpgHighwayView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_row="2"
-            android:layout_column="9" />
-
-        <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="MPG / City:"
-            android:id="@+id/textView8"
+            android:id="@+id/textView9"
             android:layout_row="7"
-            android:layout_column="0" />
+            android:layout_column="0"
+            android:layout_weight="1" />
 
         <TextView
             android:id="@+id/mpgCityView"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_weight="0"
+            android:layout_weight="1"
             android:layout_row="2"
             android:layout_column="11" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Squish VIN:"
-            android:id="@+id/textView9"
-            android:layout_row="8"
-            android:layout_column="0" />
-
-        <TextView
-            android:id="@+id/squishVinView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_row="2"
-            android:layout_column="13" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Number of Cylinders:"
-            android:id="@+id/textView10"
-            android:layout_row="9"
-            android:layout_column="0" />
-
-        <TextView
-            android:id="@+id/cylinderView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_row="2"
-            android:layout_column="15" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Horse Power:"
-            android:id="@+id/textView11"
-            android:layout_row="10"
-            android:layout_column="0" />
-
-        <TextView
-            android:id="@+id/horsePowerView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_row="2"
-            android:layout_column="17" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Engine Litters:"
-            android:id="@+id/textView12"
-            android:layout_row="11"
-            android:layout_column="0" />
-
-        <TextView
-            android:id="@+id/littersView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_row="2"
-            android:layout_column="19" />
-
     </LinearLayout>
+
+    <LinearLayout
+            android:id="@+id/cylindersLayout"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+        android:padding="5dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Number of Cylinders:"
+                android:id="@+id/textView10"
+                android:layout_row="9"
+                android:layout_column="0"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/cylinderView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_row="2"
+                android:layout_column="15"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/horsePowerLayout"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Horse Power:"
+                android:id="@+id/textView11"
+                android:layout_row="10"
+                android:layout_column="0"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/horsePowerView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_row="2"
+                android:layout_column="17"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/littersLayout"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Engine Litters:"
+                android:id="@+id/textView12"
+                android:layout_row="11"
+                android:layout_column="0"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/littersView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_row="2"
+                android:layout_column="19"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/yearsLayout"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Year:"
+                android:id="@+id/textView13"
+                android:layout_row="11"
+                android:layout_column="0"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/yearView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_row="2"
+                android:layout_column="19"
+                android:layout_weight="1" />
+
+        </LinearLayout>
 
 
 </LinearLayout>
