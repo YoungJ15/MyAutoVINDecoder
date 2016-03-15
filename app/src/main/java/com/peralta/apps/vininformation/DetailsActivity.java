@@ -1,13 +1,17 @@
 package com.peralta.apps.vininformation;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -34,42 +38,49 @@ public class DetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
-        setUpToolbar();
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         getViewValues();
         getIntentData();
     }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        switch (id){
+        String msg = "";
+        switch (item.getItemId()){
             case R.id.about:
-                item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        Dialog dialog = new Dialog(DetailsActivity.this);
-                        dialog.setContentView(R.layout.about_dialog);
-                        dialog.setTitle(R.string.app_name);
-                        dialog.show();
-                        Log.d("About option clicked", String.valueOf(item.getItemId()));
-                        return true;
-                    }
-                });
+                msg = "About";
+                Log.v("About option clicked", String.valueOf(item.getItemId()));
+                new AlertDialog.Builder(this)
+                        .setMessage("Message")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                //code if yes
+                            }
+                        })
+                        .setNegativeButton("No", null)
+                        .show();
                 break;
             case R.id.exit:
-
+                msg = "Exit";
+                Log.v("Exit option clicked", String.valueOf(item.getItemId()));
                 finish();
-                Log.d("Exit option clicked", String.valueOf(item.getItemId()));
+                break;
         }
+        Toast.makeText(this, msg + " Clicked", Toast.LENGTH_LONG).show();
         return super.onOptionsItemSelected(item);
     }
-    private void setUpToolbar(){
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Vin Information");
-        toolbar.inflateMenu(R.menu.menu_main);
-    }
 
-    private void getIntentData(){
+
+    private void getIntentData() {
 
         Intent intent = getIntent();
         String make = intent.getStringExtra("make");

@@ -1,6 +1,5 @@
 package com.peralta.apps.vininformation;
 
-import android.app.Dialog;
 import android.app.Fragment;
 import android.content.Intent;
 import android.net.Uri;
@@ -9,16 +8,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.ads.AdRequest;
 import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
 import com.google.android.gms.ads.doubleclick.PublisherInterstitialAd;
 
@@ -32,8 +28,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
-import utils.CheckNetwork;
 
 /**
  * Created by Josermando on 3/5/2016.
@@ -84,38 +78,10 @@ public class VinFragment extends Fragment {
         return layout;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        switch (id){
-            case R.id.about:
-                item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        Dialog dialog = new Dialog(getActivity());
-                        dialog.setContentView(R.layout.about_dialog);
-                        dialog.setTitle(R.string.app_name);
-                        dialog.show();
-                        Log.d("About option clicked", String.valueOf(item.getItemId()));
-                        return true;
-                    }
-                });
-                break;
-            case R.id.exit:
-
-               getActivity().finish();
-                Log.d("Exit option clicked", String.valueOf(item.getItemId()));
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     private void requestNewInterstitial(){
         PublisherAdRequest adRequest = new PublisherAdRequest.Builder().setGender(PublisherAdRequest.GENDER_MALE).addTestDevice("E3E4253CB2F3CB3CC2E697C997236F0E").build();
         interstitialAd.loadAd(adRequest);
     }
-
-
 
     public class FetchVinTask extends AsyncTask<String, Void, String[]>{
 
