@@ -87,15 +87,6 @@ public class VinFragment extends Fragment {
 
         private final String LOG_TAG = FetchVinTask.class.getSimpleName();
 
-       /** @Override
-        protected void onPostExecute(String[] strings) {
-            Log.v(LOG_TAG + " Valor del PostExecute", strings.toString());
-            if(strings != null){
-
-            }
-        }
-        **/
-
         @Override
         protected void onProgressUpdate(Void... values) {
             super.onProgressUpdate(values);
