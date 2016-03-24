@@ -62,9 +62,11 @@ public class DetailsActivity extends AppCompatActivity {
 
         String url = "http://media.ed.edmunds-media.com/acura/mdx/2006/oem/2006_acura_mdx_4dr-suv_touring_fbdg_oem_2_150.jpg";
 
-        Picasso.with(DetailsActivity.this)
+        /*Picasso.with(DetailsActivity.this)
                 .load(url)
                 .into(carImage);
+                */
+
     }
 
 
@@ -109,6 +111,9 @@ public class DetailsActivity extends AppCompatActivity {
         String horsePower = intent.getStringExtra("horsepower");
         String litters = intent.getStringExtra("litters");
         String year = intent.getStringExtra("year");
+        String styleId = intent.getStringExtra("styleId");
+
+        Log.v("StyleID Value ",styleId);
 
         makeView.setText(make);
         modelView.setText(model);
@@ -123,6 +128,10 @@ public class DetailsActivity extends AppCompatActivity {
         horsePowerView.setText(horsePower);
         littersView.setText(litters);
         yearView.setText(year);
+
+
+        CarImageTask task = new CarImageTask();
+        task.execute(styleId);
 
     }
 
@@ -236,20 +245,27 @@ public class DetailsActivity extends AppCompatActivity {
             JSONArray imageArray = carImageJSON.getJSONArray(PHOTO_SRC);
             Log.v(LOG_TAG +"Image Array Length: ",imageArray.length()+" Image Array: "+imageArray.toString().replaceAll("\\\\",""));
 
+            resultString[0] = imageArray.toString().replaceAll("\\\\","");
+            Log.v(LOG_TAG+ " resultString ",resultString[0]);
             return resultString;
         }
         public void downloadImage(String url){
             //"http://media.ed.edmunds-media.com/acura/mdx/2006/oem/2006_acura_mdx_4dr-suv_touring_fbdg_oem_2_150.jpg"
+
             Picasso.with(DetailsActivity.this)
                     .load(url)
+                    .placeholder(R.mipmap.ic_launcher)
                     .into(carImage);
         }
 
         @Override
         protected void onPostExecute(String[] strings) {
             String initialUrl = "http://media.ed.edmunds-media.com/";
-            downloadImage(initialUrl + strings);
-            sampleText.setText(strings[1]);
+            Log.v(LOG_TAG+" Strings length: ", String.valueOf(strings.length));
+            Log.v(LOG_TAG+" Strings value: ", strings[0].substring(3, strings[0].indexOf(",")-1));
+
+            downloadImage(initialUrl + strings[0].substring(3, strings[0].indexOf(",") - 1));
+            sampleText.setText(initialUrl+strings[0].substring(3, strings[0].indexOf(",")-1));
 
         }
     }

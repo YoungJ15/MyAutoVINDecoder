@@ -172,6 +172,8 @@ public class VinFragment extends Fragment {
             JSONObject JSONMPG = null;
             JSONArray JSONYEARArray = null;
             JSONObject JSONYEAR = null;
+            JSONArray JSONSTYLESArray = null;
+            JSONObject JSONSTYLES = null;
 
             if(VINJSON.has("make")){
                 JSONMake = VINJSON.getJSONObject("make");
@@ -191,6 +193,12 @@ public class VinFragment extends Fragment {
             if(VINJSON.has("years")){
                 JSONYEARArray = VINJSON.getJSONArray(EDP_YEARS);
                 JSONYEAR = JSONYEARArray.getJSONObject(0);
+            }
+            /** Check this part of the code **/
+            if(VINJSON.has("styles")){
+                JSONSTYLESArray = VINJSON.getJSONArray("styles");
+                JSONSTYLES = JSONSTYLESArray.getJSONObject(0);
+                Log.v(LOG_TAG+"JSONStyles :", JSONSTYLES.toString());
             }
             Log.v(LOG_TAG+" Year Array:",JSONYEARArray.toString());
             Log.v(LOG_TAG+" Year Object",JSONYEAR.toString());
@@ -213,6 +221,7 @@ public class VinFragment extends Fragment {
             String mpgHighway = null;
             String mpgCity = null;
             String year = null;
+            String styleId = null;
 
             if(JSONMake!= null && JSONMake.has("name")){
                 make = JSONMake.getString("name");
@@ -293,9 +302,16 @@ public class VinFragment extends Fragment {
                 year = noValue;
             }
 
+            if(JSONSTYLES != null && JSONSTYLES.has("id")){
+                styleId = JSONSTYLES.getString("id");
+            }
+            else{
+                styleId = noValue;
+            }
+
             Log.v(LOG_TAG+" Year: ",year);
 
-            resultString[1] = make + model + drive + transmissionType + numberOfSpeed + doors + mpgHighway + mpgCity + squishVin + year;
+            resultString[1] = make + model + drive + transmissionType + numberOfSpeed + doors + mpgHighway + mpgCity + squishVin + year + styleId;
 
             intent.putExtra("make", make);
             intent.putExtra("model", model);
@@ -310,6 +326,7 @@ public class VinFragment extends Fragment {
             intent.putExtra("litters", litters);
             intent.putExtra("year",year);
             intent.putExtra("squishVin", squishVin);
+            intent.putExtra("styleId", styleId);
 
             getActivity().startActivity(intent);
 
