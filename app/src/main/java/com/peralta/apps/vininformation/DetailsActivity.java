@@ -42,14 +42,12 @@ public class DetailsActivity extends AppCompatActivity {
     private TextView doorsView;
     private TextView mpgHighwayView;
     private TextView mpgCityView;
-    private TextView squishVinView;
     private TextView cylinderView;
     private TextView horsePowerView;
     private TextView littersView;
     private TextView yearView;
 
     private ImageView carImage;
-    private TextView sampleText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,13 +57,6 @@ public class DetailsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getViewValues();
         getIntentData();
-
-        String url = "http://media.ed.edmunds-media.com/acura/mdx/2006/oem/2006_acura_mdx_4dr-suv_touring_fbdg_oem_2_150.jpg";
-
-        /*Picasso.with(DetailsActivity.this)
-                .load(url)
-                .into(carImage);
-                */
 
     }
 
@@ -150,7 +141,6 @@ public class DetailsActivity extends AppCompatActivity {
         yearView = (TextView) findViewById(R.id.yearView);
 
         carImage = (ImageView) findViewById(R.id.photoImgView);
-        sampleText = (TextView) findViewById(R.id.sampleTextView);
     }
 
     public class CarImageTask extends AsyncTask<String, Void, String[]>{
@@ -254,6 +244,8 @@ public class DetailsActivity extends AppCompatActivity {
 
             Picasso.with(DetailsActivity.this)
                     .load(url)
+                    .fit()
+                    .centerCrop()
                     .placeholder(R.mipmap.ic_launcher)
                     .into(carImage);
         }
@@ -265,7 +257,6 @@ public class DetailsActivity extends AppCompatActivity {
             Log.v(LOG_TAG+" Strings value: ", strings[0].substring(3, strings[0].indexOf(",")-1));
 
             downloadImage(initialUrl + strings[0].substring(3, strings[0].indexOf(",") - 1));
-            sampleText.setText(initialUrl+strings[0].substring(3, strings[0].indexOf(",")-1));
 
         }
     }

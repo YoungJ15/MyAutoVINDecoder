@@ -174,6 +174,7 @@ public class VinFragment extends Fragment {
             JSONObject JSONYEAR = null;
             JSONArray JSONSTYLESArray = null;
             JSONObject JSONSTYLES = null;
+            String styleID2 = null;
 
             if(VINJSON.has("make")){
                 JSONMake = VINJSON.getJSONObject("make");
@@ -193,13 +194,20 @@ public class VinFragment extends Fragment {
             if(VINJSON.has("years")){
                 JSONYEARArray = VINJSON.getJSONArray(EDP_YEARS);
                 JSONYEAR = JSONYEARArray.getJSONObject(0);
+                for(int i = 0; i< JSONYEARArray.length(); i++){
+                    JSONSTYLES = JSONYEARArray.getJSONObject(i);
+                    JSONSTYLESArray = JSONSTYLES.getJSONArray("styles");
+                    JSONObject JSONSTYLEID = JSONSTYLESArray.getJSONObject(0);
+                    styleID2 = JSONSTYLEID.getString("id");
+                }
             }
             /** Check this part of the code **/
-            if(VINJSON.has("styles")){
+            /**if(VINJSON.has("styles")){
                 JSONSTYLESArray = VINJSON.getJSONArray("styles");
                 JSONSTYLES = JSONSTYLESArray.getJSONObject(0);
                 Log.v(LOG_TAG+"JSONStyles :", JSONSTYLES.toString());
             }
+             **/
             Log.v(LOG_TAG+" Year Array:",JSONYEARArray.toString());
             Log.v(LOG_TAG+" Year Object",JSONYEAR.toString());
 
@@ -297,13 +305,14 @@ public class VinFragment extends Fragment {
             }
             if(JSONYEAR != null && JSONYEAR.has("year")) {
                 year = JSONYEAR.getString("year");
+                styleId = JSONYEAR.getString("id");
             }
             else{
                 year = noValue;
             }
 
-            if(JSONSTYLES != null && JSONSTYLES.has("id")){
-                styleId = JSONSTYLES.getString("id");
+            if(JSONYEAR != null && JSONYEAR.has("styles")){
+                styleId = JSONYEAR.getString("id");
             }
             else{
                 styleId = noValue;
@@ -326,7 +335,7 @@ public class VinFragment extends Fragment {
             intent.putExtra("litters", litters);
             intent.putExtra("year",year);
             intent.putExtra("squishVin", squishVin);
-            intent.putExtra("styleId", styleId);
+            intent.putExtra("styleId", styleID2);
 
             getActivity().startActivity(intent);
 
