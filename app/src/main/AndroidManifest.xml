@@ -18,7 +18,6 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             </intent-filter>
         </activity>
@@ -44,6 +43,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.peralta.apps.vininformation.DetailsActivity" />
         </activity>
+        <!-- Image By -->
+        <!--Car graphic by <a href="http://www.icons8.com">Icons8</a> from <a href="http://www.flaticon.com/">Flaticon</a> is licensed under <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a>. Made with <a href="http://logomakr.com" title="Logo Maker">Logo Maker</a>-->
     </application>
 
 </manifest>

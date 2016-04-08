@@ -1,11 +1,8 @@
 package com.peralta.apps.vininformation;
 
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -23,7 +20,6 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -31,6 +27,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import model.CarDetails;
+import model.MechanicalDetails;
+import model.PerformanceDetails;
 
 public class DetailsActivity extends AppCompatActivity {
     private Toolbar toolbar;
@@ -46,8 +46,17 @@ public class DetailsActivity extends AppCompatActivity {
     private TextView horsePowerView;
     private TextView littersView;
     private TextView yearView;
+    private TextView manufacturerEngineCodeView;
+    private TextView valvesView;
+    private TextView carNameView;
+    private TextView vehicleStyleView;
+    private TextView vehicleTypeView;
+    private TextView engineCodeView;
+    private TextView configurationView;
+    private TextView fuelTypeView;
 
     private ImageView carImage;
+    private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,10 +65,10 @@ public class DetailsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getViewValues();
+        setUpAdView();
         getIntentData();
 
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -81,66 +90,137 @@ public class DetailsActivity extends AppCompatActivity {
                 finish();
                 break;
         }
-        Toast.makeText(this, msg + " Clicked",Toast.LENGTH_LONG).show();
+        Toast.makeText(this, msg + " Clicked", Toast.LENGTH_LONG).show();
         return super.onOptionsItemSelected(item);
     }
-
 
     private void getIntentData() {
 
         Intent intent = getIntent();
-        String make = intent.getStringExtra("make");
-        String model = intent.getStringExtra("model");
-        String drive = intent.getStringExtra("drive");
-        String transmissionType = intent.getStringExtra("transmissionType");
-        String numberOfSpeeds = intent.getStringExtra("numberOfSpeeds");
-        String doors = intent.getStringExtra("doors");
-        String mpgHighway = intent.getStringExtra("mpgHighway");
-        String mpgCity = intent.getStringExtra("mpgCity");
-        String squishVin = intent.getStringExtra("squishVin");
-        String cylinder = intent.getStringExtra("cylinder");
-        String horsePower = intent.getStringExtra("horsepower");
-        String litters = intent.getStringExtra("litters");
-        String year = intent.getStringExtra("year");
-        String styleId = intent.getStringExtra("styleId");
 
-        Log.v("StyleID Value ",styleId);
+        CarDetails carDetailsObject = (CarDetails) intent.getSerializableExtra("carDetailsObject");
+        MechanicalDetails mechanicalDetailsObject = (MechanicalDetails) intent.getSerializableExtra("mechanicalDetailsObject");
+        PerformanceDetails performanceDetailsObject = (PerformanceDetails) intent.getSerializableExtra("performanceDetailsObject");
 
+        //Values for the CarDetailsObject
+        String make = carDetailsObject.getMake();
+        String model = carDetailsObject.getModel();
+        String drive = carDetailsObject.getDrive();
+        String doors = carDetailsObject.getDoors();
+        String squishVin = carDetailsObject.getSquishVin();
+        String carName = carDetailsObject.getCarName();
+        String year = carDetailsObject.getYear();
+        String styleId = carDetailsObject.getStyleId();
+        String vehicleStyle = carDetailsObject.getVehicleStyle();
+        String vehicleType = carDetailsObject.getVehicleType();
+
+        //Values for the MechanicalDetailsObject
+        String transmissionType = mechanicalDetailsObject.getTransmissionType();
+        String numberOfSpeeds = mechanicalDetailsObject.getNumberOfSpeed();
+        String mpgHighway = performanceDetailsObject.getMpgHighway();
+        String mpgCity = performanceDetailsObject.getMpgCity();
+        String cylinder = mechanicalDetailsObject.getCylinders();
+        String horsePower = mechanicalDetailsObject.getHorsePower();
+        String litters = mechanicalDetailsObject.getLitters();
+        String manufacturerEngineCode = mechanicalDetailsObject.getManufacturerEngineCode();
+        String totalValves = mechanicalDetailsObject.getTotalValves();
+        String engineCode = mechanicalDetailsObject.getEngineCode();
+
+        //Values for the PerformanceDetailsObject
+        String configuration = performanceDetailsObject.getConfiguration();
+        String fuelType = performanceDetailsObject.getFuelType();
+
+
+        Log.v("StyleID Value ", styleId);
+
+        //Brand Segment
         makeView.setText(make);
         modelView.setText(model);
-        driveView.setText(drive);
-        transmissionTypeView.setText(transmissionType);
-        numberOfSpeedsView.setText(numberOfSpeeds);
+        yearView.setText(year);
+
+        //Details Segment
+        carNameView.setText(carName);
         doorsView.setText(doors);
-        mpgHighwayView.setText(mpgHighway);
-        mpgCityView.setText(mpgCity);
-       // squishVinView.setText(squishVin);
+        driveView.setText(drive);
+        vehicleStyleView.setText(vehicleStyle);
+        vehicleTypeView.setText(vehicleType);
+
+        //Engine Segment
+        littersView.setText(litters);
         cylinderView.setText(cylinder);
         horsePowerView.setText(horsePower);
-        littersView.setText(litters);
-        yearView.setText(year);
+        valvesView.setText(totalValves);
+        engineCodeView.setText(engineCode);
+
+        //Mechanical Segment
+        transmissionTypeView.setText(transmissionType);
+        numberOfSpeedsView.setText(numberOfSpeeds);
+        manufacturerEngineCodeView.setText(manufacturerEngineCode);
+
+        //Performance Segment
+        mpgHighwayView.setText(mpgHighway);
+        mpgCityView.setText(mpgCity);
+        configurationView.setText(configuration);
+        fuelTypeView.setText(fuelType);;
+
+
+
+
+
+
+
 
 
         CarImageTask task = new CarImageTask();
-        task.execute(styleId);
 
+        if(!styleId.equalsIgnoreCase("Data not found")){
+            task.execute(styleId);
+        }
     }
 
     private void getViewValues(){
+
+        //ImageView Segment
+        carImage = (ImageView) findViewById(R.id.photoImgView);
+
+        //Brand Segment
         makeView = (TextView) findViewById(R.id.makeTextView);
         modelView = (TextView) findViewById(R.id.modelTextView);
-        driveView = (TextView) findViewById(R.id.driveTextView);
-        transmissionTypeView = (TextView) findViewById(R.id.transmissionTypeView);
-        numberOfSpeedsView = (TextView) findViewById(R.id.numberOfSpeedView);
-        doorsView = (TextView) findViewById(R.id.doorsView);
-        mpgHighwayView = (TextView) findViewById(R.id.mpgHighwayView);
-        mpgCityView = (TextView) findViewById(R.id.mpgCityView);
-        cylinderView = (TextView) findViewById(R.id.cylinderView);
-        horsePowerView = (TextView) findViewById(R.id.horsePowerView);
-        littersView = (TextView) findViewById(R.id.littersView);
         yearView = (TextView) findViewById(R.id.yearView);
 
-        carImage = (ImageView) findViewById(R.id.photoImgView);
+        //Details Segment
+        carNameView = (TextView) findViewById(R.id.carNameTextView);
+        doorsView = (TextView) findViewById(R.id.doorsView);
+        driveView = (TextView) findViewById(R.id.driveTextView);
+        vehicleStyleView = (TextView) findViewById(R.id.styleTextView);
+        vehicleTypeView = (TextView) findViewById(R.id.typeTextView);
+
+        //Engine Segment
+        littersView = (TextView) findViewById(R.id.littersView);
+        cylinderView = (TextView) findViewById(R.id.cylinderView);
+        horsePowerView = (TextView) findViewById(R.id.horsePowerView);
+        valvesView = (TextView) findViewById(R.id.totalValvesTextView);
+        engineCodeView = (TextView) findViewById(R.id.engineCodeView);
+
+        //Mechanical Segment
+        transmissionTypeView = (TextView) findViewById(R.id.transmissionTypeView);
+        numberOfSpeedsView = (TextView) findViewById(R.id.numberOfSpeedView);
+        manufacturerEngineCodeView = (TextView) findViewById(R.id.manufacturerEngineCodeTextView);
+
+        //Performance Segment
+        mpgHighwayView = (TextView) findViewById(R.id.mpgHighwayView);
+        mpgCityView = (TextView) findViewById(R.id.mpgCityView);
+        configurationView = (TextView) findViewById(R.id.configurationView);
+        fuelTypeView = (TextView) findViewById(R.id.fuelTypeView);
+
+        //Adview
+        mAdView = (AdView) findViewById(R.id.ad_view);
+
+    }
+
+    private void setUpAdView(){
+        AdRequest adRequest = new AdRequest.Builder().setGender(AdRequest.GENDER_MALE).build();
+        mAdView.loadAd(adRequest);
     }
 
     public class CarImageTask extends AsyncTask<String, Void, String[]>{
@@ -247,17 +327,19 @@ public class DetailsActivity extends AppCompatActivity {
                     .fit()
                     .centerCrop()
                     .placeholder(R.mipmap.ic_launcher)
+                    .error(R.mipmap.ic_launcher)
                     .into(carImage);
         }
 
         @Override
         protected void onPostExecute(String[] strings) {
             String initialUrl = "http://media.ed.edmunds-media.com/";
-            Log.v(LOG_TAG+" Strings length: ", String.valueOf(strings.length));
-            Log.v(LOG_TAG+" Strings value: ", strings[0].substring(3, strings[0].indexOf(",")-1));
+            if(strings != null) {
+                Log.v(LOG_TAG + " Strings length: ", String.valueOf(strings.length));
+                Log.v(LOG_TAG + " Strings value: ", strings[0].substring(3, strings[0].indexOf(",") - 1));
 
-            downloadImage(initialUrl + strings[0].substring(3, strings[0].indexOf(",") - 1));
-
+                downloadImage(initialUrl + strings[0].substring(3, strings[0].indexOf(",") - 1));
+            }
         }
     }
 }

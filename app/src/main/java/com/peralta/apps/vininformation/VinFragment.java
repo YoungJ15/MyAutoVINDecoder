@@ -29,6 +29,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import model.CarDetails;
+import model.MechanicalDetails;
+import model.PerformanceDetails;
+
 /**
  * Created by Josermando on 3/5/2016.
  */
@@ -130,7 +134,7 @@ public class VinFragment extends Fragment {
                     return null;
                 }
                 VINJSONString = buffer.toString();
-                Log.v(LOG_TAG, "Car JSON String: " + VINJSONString);
+                Log.v(LOG_TAG, "CarDetails JSON String: " + VINJSONString);
             } catch (IOException e) {
                 Log.e(LOG_TAG, "Error", e);
                 return null;
@@ -159,8 +163,13 @@ public class VinFragment extends Fragment {
 
         private String[] getVINInfoFromJSON(String VINJSONString) throws  JSONException{
 
+            CarDetails carDetailsObject = new CarDetails();
+            MechanicalDetails mechanicalDetailsObject = new MechanicalDetails();
+            PerformanceDetails performanceDetailsObject = new PerformanceDetails();
+
             final String EDP_MPG = "MPG";
             final String EDP_YEARS = "years";
+            final String noValue = "Data not found";
 
             Intent intent = new Intent(getActivity().getBaseContext(), DetailsActivity.class);
 
@@ -174,7 +183,7 @@ public class VinFragment extends Fragment {
             JSONObject JSONYEAR = null;
             JSONArray JSONSTYLESArray = null;
             JSONObject JSONSTYLES = null;
-            String styleID2 = null;
+            JSONObject JSONCATEGORIES = null;
 
             if(VINJSON.has("make")){
                 JSONMake = VINJSON.getJSONObject("make");
@@ -194,20 +203,31 @@ public class VinFragment extends Fragment {
             if(VINJSON.has("years")){
                 JSONYEARArray = VINJSON.getJSONArray(EDP_YEARS);
                 JSONYEAR = JSONYEARArray.getJSONObject(0);
+                JSONObject JSONSTYLEID = null;
                 for(int i = 0; i< JSONYEARArray.length(); i++){
-                    JSONSTYLES = JSONYEARArray.getJSONObject(i);
-                    JSONSTYLESArray = JSONSTYLES.getJSONArray("styles");
-                    JSONObject JSONSTYLEID = JSONSTYLESArray.getJSONObject(0);
-                    styleID2 = JSONSTYLEID.getString("id");
+                    if(JSONYEAR.has("styles")){
+                        JSONSTYLES = JSONYEARArray.getJSONObject(i);
+                        JSONSTYLESArray = JSONSTYLES.getJSONArray("styles");
+                        JSONSTYLEID = JSONSTYLESArray.getJSONObject(0);
+                    }
+                    if(JSONSTYLEID != null && JSONSTYLEID.has("id")){
+                        carDetailsObject.setStyleId(JSONSTYLEID.getString("id"));
+                    }
+                    else{
+                        carDetailsObject.setStyleId(noValue);
+                    }
+                    if(JSONSTYLEID != null && JSONSTYLEID.has("name")){
+                        carDetailsObject.setCarName(JSONSTYLEID.getString("name"));
+                    }
+                    else{
+                        carDetailsObject.setCarName(noValue);
+                    }
                 }
             }
-            /** Check this part of the code **/
-            /**if(VINJSON.has("styles")){
-                JSONSTYLESArray = VINJSON.getJSONArray("styles");
-                JSONSTYLES = JSONSTYLESArray.getJSONObject(0);
-                Log.v(LOG_TAG+"JSONStyles :", JSONSTYLES.toString());
+            if(VINJSON.has("categories")){
+                JSONCATEGORIES = VINJSON.getJSONObject("categories");
             }
-             **/
+
             Log.v(LOG_TAG+" Year Array:",JSONYEARArray.toString());
             Log.v(LOG_TAG+" Year Object",JSONYEAR.toString());
 
@@ -215,128 +235,150 @@ public class VinFragment extends Fragment {
             String [] resultString = new String [10];
 
             //Strings to put into the Intent
-            String noValue = "Data not found";
-            String make = null;
-            String model = null;
-            String drive = null;
-            String transmissionType = null;
-            String numberOfSpeed = null;
-            String squishVin = null;
-            String doors = null;
-            String cylinders = null;
-            String horsePower = null;
-            String litters = null;
-            String mpgHighway = null;
-            String mpgCity = null;
-            String year = null;
-            String styleId = null;
 
             if(JSONMake!= null && JSONMake.has("name")){
-                make = JSONMake.getString("name");
+                carDetailsObject.setMake(JSONMake.getString("name"));
             }
             else{
-                make = noValue;
+                carDetailsObject.setMake(noValue);
             }
             if(JSONModel != null && JSONModel.has("name")) {
-                model = JSONModel.getString("name");
+                carDetailsObject.setModel(JSONModel.getString("name"));
             }
             else{
-                model = noValue;
+                carDetailsObject.setModel(noValue);
             }
             if(VINJSON.has("drivenWheels")) {
-                drive = VINJSON.getString("drivenWheels");
+                carDetailsObject.setDrive(VINJSON.getString("drivenWheels"));
             }
             else{
-                drive = noValue;
+                carDetailsObject.setDrive(noValue);
             }
             if(JSONTransmission != null && JSONTransmission.has("transmissionType")) {
-                transmissionType = JSONTransmission.getString("transmissionType");
+                mechanicalDetailsObject.setTransmissionType(JSONTransmission.getString("transmissionType"));
            }
             else{
-                transmissionType = noValue;
+                mechanicalDetailsObject.setTransmissionType(noValue);
             }
             if(JSONTransmission != null && JSONTransmission.has("numberOfSpeeds") ) {
-                numberOfSpeed = JSONTransmission.getString("numberOfSpeeds");
+                mechanicalDetailsObject.setNumberOfSpeed(JSONTransmission.getString("numberOfSpeeds"));
             }
             else{
-                numberOfSpeed = noValue;
+                mechanicalDetailsObject.setNumberOfSpeed(noValue);
             }
             if(VINJSON.has("squishVin") ) {
-                squishVin = VINJSON.getString("squishVin");
+                carDetailsObject.setSquishVin(VINJSON.getString("squishVin"));
             }
             else{
-                squishVin = noValue;
+                carDetailsObject.setSquishVin(noValue);
             }
             if(VINJSON.has("numOfDoors")  ) {
-                doors = VINJSON.getString("numOfDoors");
+                carDetailsObject.setDoors(VINJSON.getString("numOfDoors"));
             }
             else{
-                doors = noValue;
+                carDetailsObject.setDoors(noValue);
             }
             if(JSONENGINE != null && JSONENGINE.has("cylinder") ) {
-                cylinders = JSONENGINE.getString("cylinder");
+                mechanicalDetailsObject.setCylinders(JSONENGINE.getString("cylinder"));
             }
             else{
-                cylinders = noValue;
+                mechanicalDetailsObject.setCylinders(noValue);
             }
             if(JSONENGINE != null && JSONENGINE.has("horsepower")) {
-                horsePower = JSONENGINE.getString("horsepower");
+                mechanicalDetailsObject.setHorsePower(JSONENGINE.getString("horsepower"));
             }
             else{
-                horsePower = noValue;
+                mechanicalDetailsObject.setHorsePower(noValue);
             }
             if(JSONENGINE != null && JSONENGINE.has("size")) {
-                litters = JSONENGINE.getString("size");
+                mechanicalDetailsObject.setLitters(JSONENGINE.getString("size"));
             }
             else{
-                litters = noValue;
+                mechanicalDetailsObject.setLitters(noValue);
             }
+            if(JSONENGINE != null && JSONENGINE.has("manufacturerEngineCode")){
+                mechanicalDetailsObject.setManufacturerEngineCode(JSONENGINE.getString("manufacturerEngineCode"));
+            }
+            else{
+                mechanicalDetailsObject.setManufacturerEngineCode(noValue);
+            }
+            if(JSONENGINE != null && JSONENGINE.has("totalValves")){
+                mechanicalDetailsObject.setTotalValves(JSONENGINE.getString("totalValves"));
+            }
+            else{
+                mechanicalDetailsObject.setTotalValves(noValue);
+            }
+            if(JSONENGINE != null && JSONENGINE.has("configuration")){
+                performanceDetailsObject.setConfiguration(JSONENGINE.getString("configuration"));
+            }
+            else{
+                performanceDetailsObject.setConfiguration(noValue);
+            }
+
+            if(JSONENGINE != null && JSONENGINE.has("fuelType")){
+                performanceDetailsObject.setFuelType(JSONENGINE.getString("fuelType"));
+            }
+            else{
+                performanceDetailsObject.setFuelType(noValue);
+            }
+
+            if(JSONENGINE != null && JSONENGINE.has("code")){
+                mechanicalDetailsObject.setEngineCode(JSONENGINE.getString("code"));
+            }
+            else{
+                mechanicalDetailsObject.setEngineCode(noValue);
+            }
+
+
             if(JSONMPG != null && JSONMPG.has("highway")) {
-                mpgHighway = JSONMPG.getString("highway");
+                performanceDetailsObject.setMpgHighway(JSONMPG.getString("highway"));
             }
             else{
-                mpgHighway = noValue;
+                performanceDetailsObject.setMpgHighway(noValue);
             }
             if(JSONMPG != null && JSONMPG.has("city")) {
-                mpgCity = JSONMPG.getString("city");
+                performanceDetailsObject.setMpgCity(JSONMPG.getString("city"));
             }
             else{
-                mpgCity = noValue;
+                performanceDetailsObject.setMpgCity(noValue);
             }
             if(JSONYEAR != null && JSONYEAR.has("year")) {
-                year = JSONYEAR.getString("year");
-                styleId = JSONYEAR.getString("id");
+                carDetailsObject.setYear(JSONYEAR.getString("year"));
             }
             else{
-                year = noValue;
+                carDetailsObject.setYear(noValue);
             }
-
-            if(JSONYEAR != null && JSONYEAR.has("styles")){
-                styleId = JSONYEAR.getString("id");
+            if(JSONCATEGORIES != null && JSONCATEGORIES.has("vehicleStyle")){
+                carDetailsObject.setVehicleStyle(JSONCATEGORIES.getString("vehicleStyle"));
             }
             else{
-                styleId = noValue;
+                carDetailsObject.setVehicleStyle(noValue);
+            }
+            if(JSONCATEGORIES != null && JSONCATEGORIES.has("vehicleType")){
+                carDetailsObject.setVehicleType(JSONCATEGORIES.getString("vehicleType"));
+            }
+            else{
+                carDetailsObject.setVehicleType(noValue);
             }
 
-            Log.v(LOG_TAG+" Year: ",year);
 
-            resultString[1] = make + model + drive + transmissionType + numberOfSpeed + doors + mpgHighway + mpgCity + squishVin + year + styleId;
+            Log.v(LOG_TAG+" Year: ", carDetailsObject.getYear());
 
-            intent.putExtra("make", make);
-            intent.putExtra("model", model);
-            intent.putExtra("drive", drive);
-            intent.putExtra("transmissionType", transmissionType);
-            intent.putExtra("numberOfSpeeds", numberOfSpeed);
-            intent.putExtra("doors", doors);
-            intent.putExtra("mpgHighway", mpgHighway);
-            intent.putExtra("mpgCity", mpgCity);
-            intent.putExtra("cylinder", cylinders);
-            intent.putExtra("horsepower", horsePower);
-            intent.putExtra("litters", litters);
-            intent.putExtra("year",year);
-            intent.putExtra("squishVin", squishVin);
-            intent.putExtra("styleId", styleID2);
+            resultString[1] =   carDetailsObject.getMake() +
+                                carDetailsObject.getModel() +
+                                carDetailsObject.getDrive() +
+                                mechanicalDetailsObject.getTransmissionType() +
+                                mechanicalDetailsObject.getNumberOfSpeed() +
+                                carDetailsObject.getDoors() +
+                                performanceDetailsObject.getMpgHighway() +
+                                performanceDetailsObject.getMpgCity() +
+                                carDetailsObject.getSquishVin() +
+                                carDetailsObject.getYear() +
+                                carDetailsObject.getStyleId();
 
+            intent.putExtra("carDetailsObject", carDetailsObject);
+            intent.putExtra("mechanicalDetailsObject", mechanicalDetailsObject);
+            intent.putExtra("performanceDetailsObject", performanceDetailsObject);
             getActivity().startActivity(intent);
 
             return resultString;

@@ -13,7 +13,8 @@
         android:layout_height="match_parent"
         xmlns:ads="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical"
-        tools:context="com.peralta.apps.vininformation.DetailsActivity">
+        tools:context="com.peralta.apps.vininformation.DetailsActivity"
+        android:background="#F5F5F5">
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
@@ -32,29 +33,33 @@
         <ImageView
             android:layout_width="fill_parent"
             android:layout_height="150dp"
-            android:id="@+id/photoImgView" />
+            android:id="@+id/photoImgView"
+            android:src="@mipmap/ic_launcher" />
 
         <View
             android:layout_width="fill_parent"
             android:layout_height="2dp"
-            android:background="#000000"/>
-
-        <TextView
-            android:id="@+id/makeTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:hint="make"
-            android:layout_weight="1"
-            android:textSize="25dp"
-            android:gravity="right" />
+            android:background="#B6B6B6"/>
 
         <LinearLayout
             style="@style/Divider"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/commonCarDetailsLayout">
+            android:id="@+id/brandLayout"
+            android:gravity="center_horizontal"
+            android:background="#303F9F">
+
+            <TextView
+                android:id="@+id/makeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:hint="make"
+                android:layout_weight="0"
+                android:textSize="18dp"
+                android:layout_marginRight="10dp"
+                android:textColor="#FFFFFF" />
 
             <TextView
                 android:id="@+id/modelTextView"
@@ -63,8 +68,9 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:hint="model"
                 android:layout_weight="0"
-                android:textSize="25dp"
-                android:layout_marginRight="10dp" />
+                android:textSize="18dp"
+                android:layout_marginRight="10dp"
+                android:textColor="#FFFFFF" />
 
             <TextView
                 android:id="@+id/yearView"
@@ -73,197 +79,392 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:hint="year"
                 android:layout_weight="0"
-                android:textSize="25dp" />
+                android:textSize="18dp"
+                android:textColor="#FFFFFF" />
 
         </LinearLayout>
 
         <View
             android:layout_width="fill_parent"
             android:layout_height="2dp"
-            android:background="#000000"/>
+            android:background="#B6B6B6"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Details"
+            android:id="@+id/textView14"
+            android:layout_weight="0"
+            android:layout_gravity="center_horizontal"
+            android:textColor="#FFFFFF"
+            android:background="#03A9F4"
+            android:gravity="center_horizontal"
+            android:typeface="serif" />
+
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/mechanicalLayout"
-            android:touchscreenBlocksFocus="false">
+            android:id="@+id/commonDetailsLayout">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Engine Litters:"
-                android:id="@+id/textView12" />
+                android:text="Car Name:"
+                android:id="@+id/textView2"
+                android:textSize="14dp" />
 
             <TextView
-                android:id="@+id/littersView"
+                android:id="@+id/carNameTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:hint="litters" />
+                android:hint="carName"
+                android:textSize="14dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Number of Cylinders:"
-                android:id="@+id/textView10" />
+                android:text="Number of Doors:"
+                android:id="@+id/textView6"
+                android:textSize="14dp" />
 
             <TextView
-                android:id="@+id/cylinderView"
+                android:id="@+id/doorsView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:hint="number of cylinders" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Horse Power:"
-                android:id="@+id/textView11" />
-
-            <TextView
-                android:id="@+id/horsePowerView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:hint="horse power" />
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="2dp"
-            android:background="#000000"/>
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/transmissionLayout">
+                android:hint="number of doors"
+                android:textSize="14dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Type of Drive:"
-                android:id="@+id/textView3" />
-
+                android:id="@+id/textView3"
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/driveTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:hint="type of Drive" />
+                android:hint="type of Drive"
+                android:textSize="14dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Vehicle Style:"
+                android:id="@+id/textView9"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/styleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:hint="Vehicle style"
+                android:textSize="14dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Vehicle Type:"
+                android:id="@+id/textView15"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/typeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:hint="Vehicle type"
+                android:textSize="14dp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Engine"
+            android:id="@+id/engineLabel"
+            android:layout_weight="0"
+            android:layout_gravity="center_horizontal"
+            android:textColor="#FFFFFF"
+            android:background="#03A9F4"
+            android:gravity="center_horizontal"
+            android:typeface="serif" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/enginelLayout"
+            android:touchscreenBlocksFocus="false"
+            android:background="#F5F5F5">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Engine Litters:"
+                android:id="@+id/textView12"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/littersView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:hint="litters"
+                android:textSize="14dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Number of Cylinders:"
+                android:id="@+id/textView10"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/cylinderView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:hint="number of cylinders"
+                android:textSize="14dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Horse Power:"
+                android:id="@+id/textView11"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/horsePowerView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:hint="horse power"
+                android:textSize="14dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Valves:"
+                android:id="@+id/textView13"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/totalValvesTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:hint="valves"
+                android:textSize="14dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Engine Code:"
+                android:id="@+id/textView16"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/engineCodeView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:hint="Engine Code"
+                android:textSize="14dp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:background="#B6B6B6"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Mechanical"
+            android:id="@+id/mechanicalLabel"
+            android:layout_gravity="center_horizontal"
+            android:textColor="#FFFFFF"
+            android:singleLine="false"
+            android:gravity="center_horizontal"
+            android:background="#03A9F4"
+            android:typeface="serif" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/mechanicalLayout">
+
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Transmission Type:"
-                android:id="@+id/textView4" />
+                android:id="@+id/textView4"
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/transmissionTypeView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:hint="type of transmission" />
+                android:hint="type of transmission"
+                android:textSize="14dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Number of Speeds:"
-                android:id="@+id/textView5" />
+                android:id="@+id/textView5"
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/numberOfSpeedView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:hint="number of speeds" />
+                android:hint="number of speeds"
+                android:textSize="14dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Manufacturer Engine Code:"
+                android:id="@+id/textView"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/manufacturerEngineCodeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:hint="Manufacturer Engine Code"
+                android:textSize="14dp" />
         </LinearLayout>
 
         <View
             android:layout_width="fill_parent"
             android:layout_height="2dp"
-            android:background="#000000"/>
+            android:background="#B6B6B6"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Performance"
+            android:id="@+id/performanceLabel"
+            android:layout_gravity="center_horizontal"
+            android:textColor="#FFFFFF"
+            android:background="#03A9F4"
+            android:gravity="center_horizontal"
+            android:typeface="serif" />
+
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"></LinearLayout>
+            android:layout_height="match_parent"
+            android:id="@+id/performanceLayout">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Number of Doors:"
-            android:id="@+id/textView6" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="MPG Highway / City:"
+                android:id="@+id/textView7"
+                android:textSize="14dp" />
 
-        <TextView
-            android:id="@+id/doorsView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:hint="number of doors" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="MPG / Highway:"
-            android:id="@+id/textView7" />
+                <TextView
+                    android:id="@+id/mpgHighwayView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:hint="mpg in highway"
+                    android:layout_weight="0"
+                    android:textSize="14dp"
+                    android:gravity="left"
+                    android:layout_marginRight="10dp" />
 
-        <TextView
-            android:id="@+id/mpgHighwayView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:hint="mpg in highway" />
+                <TextView
+                    android:id="@+id/mpgCityView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:hint="mpg city"
+                    android:layout_weight="0"
+                    android:textSize="14dp"
+                    android:gravity="left" />
+            </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="MPG / City:"
-            android:id="@+id/textView9" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Configuration:"
+                android:id="@+id/textView18"
+                android:textSize="14dp" />
 
-        <TextView
-            android:id="@+id/mpgCityView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:hint="mpg city" />
+            <TextView
+                android:id="@+id/configurationView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:hint="configuration"
+                android:textSize="14dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Engine / Performance"
-            android:id="@+id/engineLabel" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Fuel Type:"
+                android:id="@+id/textView20"
+                android:textSize="14dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Exterior Options"
-            android:id="@+id/exteriorLabel" />
+            <TextView
+                android:id="@+id/fuelTypeView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:hint="fuel type"
+                android:textSize="14dp" />
+        </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/ad_view"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Fuel"
-            android:id="@+id/fuelLabel" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Mechanical Options"
-            android:id="@+id/mechanicalLabel" />
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/banner_ad_unit_id" />
 
     </LinearLayout>
 
